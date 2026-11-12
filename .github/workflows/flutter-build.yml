@@ -75,7 +75,7 @@ jobs:
   # Optional: attach both files to a GitHub Release when you push a tag like v1.0.0
   release:
     if: startsWith(github.ref, 'refs/tags/v')
-    needs: [build_android, build_ios]
+    needs: [build_android]
     runs-on: ubuntu-latest
     permissions:
       contents: write
