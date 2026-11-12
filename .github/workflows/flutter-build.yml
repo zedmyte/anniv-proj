@@ -42,35 +42,35 @@ jobs:
           path: dist/*.apk
           retention-days: 30
 
-  build_ios:
-    runs-on: macos-latest # GitHub-hosted Mac, so you don't need your own
-    steps:
-      - uses: actions/checkout@v6
+  # build_ios:
+  #   runs-on: macos-latest # GitHub-hosted Mac, so you don't need your own
+  #   steps:
+  #     - uses: actions/checkout@v6
 
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: stable
-          cache: true
+  #     - uses: subosito/flutter-action@v2
+  #       with:
+  #         flutter-version: ${{ env.FLUTTER_VERSION }}
+  #         channel: stable
+  #         cache: true
 
-      - run: flutter pub get
+  #     - run: flutter pub get
 
-      # Unsigned build: AltStore re-signs the IPA with your Apple ID on install
-      - run: flutter build ios --release --no-codesign
+  #     # Unsigned build: AltStore re-signs the IPA with your Apple ID on install
+  #     - run: flutter build ios --release --no-codesign
 
-      - name: Package IPA
-        run: |
-          rm -rf Payload dist
-          mkdir -p Payload dist
-          cp -R build/ios/iphoneos/Runner.app Payload/Runner.app
-          zip -qry "dist/app-ios-${GITHUB_SHA::7}.ipa" Payload
-          rm -rf Payload
+  #     - name: Package IPA
+  #       run: |
+  #         rm -rf Payload dist
+  #         mkdir -p Payload dist
+  #         cp -R build/ios/iphoneos/Runner.app Payload/Runner.app
+  #         zip -qry "dist/app-ios-${GITHUB_SHA::7}.ipa" Payload
+  #         rm -rf Payload
 
-      - uses: actions/upload-artifact@v7
-        with:
-          name: ios-ipa
-          path: dist/*.ipa
-          retention-days: 30
+  #     - uses: actions/upload-artifact@v7
+  #       with:
+  #         name: ios-ipa
+  #         path: dist/*.ipa
+  #         retention-days: 30
 
   # Optional: attach both files to a GitHub Release when you push a tag like v1.0.0
   release:
